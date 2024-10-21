@@ -20,7 +20,7 @@ export const Login = () => {
       .then((authInfo) => {
         if (authInfo.token) {
           // Updated condition
-          localStorage.setItem('token', JSON.stringify(authInfo.token));
+          localStorage.setItem('token', JSON.stringify(authInfo));
           navigate('/');
         } else {
           existDialog.current.showModal();
