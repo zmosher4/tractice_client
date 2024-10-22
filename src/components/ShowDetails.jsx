@@ -34,11 +34,33 @@ export const ShowDetails = () => {
 
   return (
     <>
-      <div>Show Date: {readableDate}</div>
-      <div>Artist: {show?.artist.name}</div>
-      <div>Description: {show?.description}</div>
-      <Link to={`/edit-show/${show?.id}`}>Edit </Link>
-      <button onClick={() => handleDelete(show.id)}> Delete</button>
+      <h1 className="text-4xl flex justify-center items-center">
+        Show Details
+      </h1>
+      <div className="flex justify-center items-center text-2xl m-4">
+        Show Date: {readableDate}
+      </div>
+      <div className="flex justify-center items-center text-2xl m-4">
+        Artist: {show?.artist.name}
+      </div>
+      <div className="flex justify-center items-center text-2xl m-4">
+        Description: {show?.description}
+      </div>
+      <div className="flex justify-center items-center space-x-3 text-lg">
+        <Link
+          className="border rounded border-gray-500 px-2"
+          to={`/edit-show/${show?.id}`}
+        >
+          Edit{' '}
+        </Link>
+        <button
+          className="border rounded border-gray-500 px-2"
+          onClick={() => handleDelete(show.id)}
+        >
+          {' '}
+          Delete
+        </button>
+      </div>
     </>
   );
 };
