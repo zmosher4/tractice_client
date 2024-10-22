@@ -10,6 +10,16 @@ export const getShows = async () => {
   return shows;
 };
 
+export const getShowById = async (id) => {
+  const res = await fetch(`${url}/shows/${id}`, {
+    headers: {
+      Authorization: `Token ${JSON.parse(localStorage.getItem('token')).token}`,
+    },
+  });
+  const show = await res.json();
+  return show;
+};
+
 export const createShow = async (showObj) => {
   return await fetch(`${url}/shows`, {
     method: 'POST',
@@ -18,5 +28,16 @@ export const createShow = async (showObj) => {
       'Content-type': 'application/json',
     },
     body: JSON.stringify(showObj),
+  });
+};
+
+export const editShow = async (show) => {
+  return await fetch(`${url}/shows/${show.id}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Token ${JSON.parse(localStorage.getItem('token')).token}`,
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify(show),
   });
 };
