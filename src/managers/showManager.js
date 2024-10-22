@@ -41,3 +41,13 @@ export const editShow = async (show) => {
     body: JSON.stringify(show),
   });
 };
+
+export const deleteShow = async (id) => {
+  await fetch(`${url}/shows/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Token ${JSON.parse(localStorage.getItem('token')).token}`,
+      'Content-type': 'application/json',
+    },
+  });
+};

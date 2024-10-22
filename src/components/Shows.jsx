@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getShows } from '../managers/showManager';
+import { deleteShow, getShows } from '../managers/showManager';
 import { Link, useNavigate } from 'react-router-dom';
 
 export const Shows = () => {
@@ -19,34 +19,40 @@ export const Shows = () => {
   }, []);
 
   const renderedShows = myShows.map((show) => {
-    const dateObj = new Date(show.performance_date);
-    const readableDate = dateObj.toLocaleString('en-US', {
-      year: 'numeric',
-      month: 'long', // 'long' for full month name, 'short' for abbreviated month
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      timeZoneName: 'short', // Optional: Include the time zone (like "UTC" or "PDT")
-    });
+    const readableDate = new Date(show.performance_date).toLocaleString(
+      'en-US',
+      {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+      }
+    );
+
+    const handleDelete = async (id) => {
+      await deleteShow(id);
+      getMyShows();
+    };
+
     return (
       <div key={show.id}>
-        {' '}
         <div>
-          <Link to={`/show/${show.id}`}> {show.description} </Link>{' '}
-          <Link to={`edit-show/${show.id}`}>edit</Link>{' '}
+          <Link to={`/show/${show.id}`}>{show.description}</Link>
+          <Link to={`edit-show/${show.id}`}> edit </Link>
+          <button onClick={() => handleDelete(show.id)}>delete</button>
         </div>
         <div>{readableDate}</div>
         <div>{show.artist.name}</div>
       </div>
     );
   });
+
   return (
     <>
       <h1 className="text-4xl">Upcoming Shows</h1>
-
       <button onClick={() => navigate('/new-show')}>New Show</button>
-
       <div>{renderedShows}</div>
     </>
   );
