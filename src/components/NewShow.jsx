@@ -61,64 +61,78 @@ export const NewShow = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h1>Add a show</h1>
-      <fieldset>
-        <label htmlFor="description">Description</label>
-        <input
-          type="text"
-          id="description"
-          name="description"
-          placeholder="Show Description"
-          required
-          value={show.description || ''}
-          onChange={handleInputChange}
-        />
-      </fieldset>
+      <h1 className="text-4xl font-bold flex items-center justify-center">
+        Add a show
+      </h1>
+      <div className="flex items-center justify-center flex-col m-8">
+        <div className="flex flex-col flex-wrap justify-center space-x-4">
+          <fieldset className="flex flex-col ml-4 mb-4">
+            <label htmlFor="description">Details</label>
+            <input
+              type="text"
+              id="description"
+              name="description"
+              placeholder="Show Description"
+              required
+              className="border rounded border-gray-400 p-4 w-[40rem]"
+              value={show.description || ''}
+              onChange={handleInputChange}
+            />
+          </fieldset>
 
-      <fieldset>
-        <label htmlFor="date">Performance Date</label>
-        <input
-          type="text"
-          id="date"
-          name="date"
-          placeholder="MM/DD/YYYY"
-          value={show.date || ''}
-          onChange={handleInputChange}
-          required
-        />
-      </fieldset>
+          <fieldset className="flex flex-col mb-4">
+            <label htmlFor="date">Performance Date</label>
+            <input
+              type="text"
+              id="date"
+              name="date"
+              placeholder="MM/DD/YYYY"
+              value={show.date || ''}
+              onChange={handleInputChange}
+              className="border rounded border-gray-400 p-4"
+              required
+            />
+          </fieldset>
 
-      <fieldset>
-        <label htmlFor="time">Performance Time</label>
-        <input
-          type="time"
-          id="time"
-          name="time"
-          value={show.time || ''}
-          onChange={handleInputChange}
-          required
-        />
-      </fieldset>
+          <fieldset className="flex flex-col mb-4">
+            <label htmlFor="time">Performance Time</label>
+            <input
+              type="time"
+              id="time"
+              name="time"
+              value={show.time || ''}
+              onChange={handleInputChange}
+              className="border rounded border-gray-400 p-4"
+              required
+            />
+          </fieldset>
 
-      <fieldset>
-        <label htmlFor="artist">Artist</label>
-        <select
-          value={show.artist_id || ''}
-          name="artist_id"
-          id="artist"
-          onChange={handleInputChange}
-          required
+          <fieldset className="flex flex-col mb-4">
+            <label htmlFor="artist">Artist</label>
+            <select
+              value={show.artist_id || ''}
+              name="artist_id"
+              id="artist"
+              onChange={handleInputChange}
+              className="border rounded border-gray-400 p-4"
+              required
+            >
+              <option value="">Choose an Artist</option>
+              {artists.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.name}
+                </option>
+              ))}
+            </select>
+          </fieldset>
+        </div>
+        <button
+          className="m-4 border rounded border-gray-400 px-9 py-2"
+          type="submit"
         >
-          <option value="">Choose an Artist</option>
-          {artists.map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.name}
-            </option>
-          ))}
-        </select>
-      </fieldset>
-
-      <button type="submit">Submit</button>
+          Submit
+        </button>
+      </div>
     </form>
   );
 };
