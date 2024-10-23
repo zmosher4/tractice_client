@@ -1,22 +1,13 @@
 import { useEffect, useState } from 'react';
 import { deleteShow, getShows } from '../managers/showManager';
 import { Link, useNavigate } from 'react-router-dom';
+import { Artists } from './Artists';
+import { useShows } from '../state/ShowsContext';
 
 export const Shows = () => {
-  const [myShows, setMyShows] = useState([]);
+  const { myShows, getMyShows } = useShows();
   const navigate = useNavigate();
 
-  const getMyShows = async () => {
-    const data = await getShows();
-    const filteredShows = data.filter(
-      (show) => show.user.id === JSON.parse(localStorage.getItem('token')).id
-    );
-    setMyShows(filteredShows);
-  };
-
-  useEffect(() => {
-    getMyShows();
-  }, []);
   const handleDelete = async (id) => {
     await deleteShow(id);
     getMyShows();
@@ -36,37 +27,38 @@ export const Shows = () => {
     );
 
     return (
-      <Link to={`/show/${show.id}`}>
-        <div
-          className="m-4 border border-gray-700 shadow-md rounded w-[20rem] p-4 hover:translate-y-0.5 transition-transform"
-          key={show.id}
-        >
+      <div
+        className="m-4 border border-gray-700 shadow-md rounded w-[20rem] p-4 hover:translate-y-0.5 transition-transform"
+        key={show.id}
+      >
+        <Link to={`/show/${show.id}`}>
           <div>{show.description}</div>
           <div>{readableDate}</div>
           <div>{show.artist.name}</div>
-          <div className="flex justify-end space-x-5">
-            <Link
-              className="border rounded border-gray-500 px-2"
-              to={`edit-show/${show.id}`}
-            >
-              {' '}
-              edit{' '}
-            </Link>
-            <button
-              className="border rounded border-gray-500 px-2"
-              onClick={() => handleDelete(show.id)}
-            >
-              delete
-            </button>
-          </div>
+        </Link>
+
+        <div className="flex justify-end space-x-5">
+          <Link
+            className="border rounded border-gray-500 px-2"
+            to={`edit-show/${show.id}`}
+          >
+            {' '}
+            edit{' '}
+          </Link>
+          <button
+            className="border rounded border-gray-500 px-2"
+            onClick={() => handleDelete(show.id)}
+          >
+            delete
+          </button>
         </div>
-      </Link>
+      </div>
     );
   });
 
   return (
     <>
-      <h1 className="flex items-center justify-center text-6xl font-bold">
+      <h1 className="flex items-center justify-center ml-5 mb-5 text-6xl font-bold">
         Upcoming Shows
       </h1>
       <button
@@ -75,7 +67,12 @@ export const Shows = () => {
       >
         New Show
       </button>
-      <div>{renderedShows}</div>
+      <div className="flex justify-between">
+        <div className="flex flex-col">{renderedShows}</div>
+        <div>
+          <Artists shows={myShows} />
+        </div>
+      </div>
     </>
   );
 };
