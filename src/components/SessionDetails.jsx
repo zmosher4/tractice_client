@@ -37,7 +37,7 @@ export const SessionDetails = () => {
     return <div key={showSong.id}>{showSong.song.title}</div>;
   });
   const readableShowDate = new Date(
-    session.show.performance_date
+    session.show?.performance_date
   ).toLocaleString('en-US', {
     year: 'numeric',
     month: 'long',
