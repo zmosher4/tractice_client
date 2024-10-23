@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getPracticeSessions } from '../managers/practiceSessionManager';
+import { getAllShowSongs } from '../managers/showSongManager';
+import { Link } from 'react-router-dom';
 
 export const Sessions = () => {
   const [mySessions, setMySessions] = useState([]);
@@ -41,10 +43,12 @@ export const Sessions = () => {
     );
     return (
       <div key={s.id}>
-        <div>Show Date: {readableShowDate}</div>
-        <div>Artist: {s.show?.artist?.name}</div>
-        <div>Session Date: {readableSessionDate}</div>
-        <div>Notes: {s.notes}</div>
+        <Link to={`/session/${s.id}`}>
+          <div>Show Date: {readableShowDate}</div>
+          <div>Artist: {s.show?.artist?.name}</div>
+          <div>Session Date: {readableSessionDate}</div>
+          <div>Notes: {s.notes}</div>
+        </Link>
       </div>
     );
   });
