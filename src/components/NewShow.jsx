@@ -1,21 +1,13 @@
 import { useEffect, useState } from 'react';
-import { getAllArtists } from '../managers/artistManager';
+import { createArtist, getAllArtists } from '../managers/artistManager';
 import { createShow } from '../managers/showManager';
 import { useNavigate } from 'react-router-dom';
 
 export const NewShow = () => {
-  const [artists, setArtists] = useState([]);
   const [show, setShow] = useState({});
   const navigate = useNavigate();
-
-  const getArtists = async () => {
-    const data = await getAllArtists();
-    setArtists(data);
-  };
-
-  useEffect(() => {
-    getArtists();
-  }, []);
+  const [artists, setArtists] = useState([]);
+  const [newArtistName, setNewArtistName] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -23,6 +15,28 @@ export const NewShow = () => {
       ...prevShow,
       [name]: value,
     }));
+  };
+
+  const getArtists = async () => {
+    const data = await getAllArtists();
+    const filteredArtists = data.filter(
+      (a) => a.user.id === JSON.parse(localStorage.getItem('token')).id
+    );
+    setArtists(filteredArtists);
+  };
+  useEffect(() => {
+    getArtists();
+  }, []);
+
+  const handleNewArtistChange = (e) => {
+    setNewArtistName(e.target.value);
+  };
+
+  const handleAddArtist = async (e) => {
+    e.preventDefault();
+    await createArtist({ name: newArtistName });
+    getArtists();
+    setNewArtistName('');
   };
 
   const handleSubmit = async (e) => {
@@ -48,7 +62,7 @@ export const NewShow = () => {
       const createdShow = {
         ...show,
         performance_date: utcDateTime,
-        artist_id: parseInt(show.artist_id),
+        artist_id: show.artist_id,
       };
 
       const res = await createShow(createdShow);
@@ -110,12 +124,12 @@ export const NewShow = () => {
           <fieldset className="flex flex-col mb-4">
             <label htmlFor="artist">Artist</label>
             <select
-              value={show.artist_id || ''}
+              value={show.artist_id}
               name="artist_id"
               id="artist"
               onChange={handleInputChange}
-              className="border rounded border-gray-400 p-4"
               required
+              className="border rounded border-gray-400 p-4"
             >
               <option value="">Choose an Artist</option>
               {artists.map((a) => (
@@ -124,6 +138,24 @@ export const NewShow = () => {
                 </option>
               ))}
             </select>
+          </fieldset>
+
+          <fieldset className="flex flex-col mb-4">
+            <label htmlFor="newArtist">Add New Artist</label>
+            <input
+              type="text"
+              id="newArtist"
+              placeholder="New Artist Name"
+              value={newArtistName}
+              onChange={handleNewArtistChange}
+              className="border rounded border-gray-400 p-4"
+            />
+            <button
+              onClick={handleAddArtist}
+              className="mt-2 border rounded border-gray-400 px-4 py-2"
+            >
+              Add Artist
+            </button>
           </fieldset>
         </div>
         <button

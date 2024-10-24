@@ -7,11 +7,16 @@ import { useShows } from '../state/ShowsContext';
 export const Shows = () => {
   const { myShows, getMyShows } = useShows();
   const navigate = useNavigate();
+  const [refresh, setRefresh] = useState(false);
 
   const handleDelete = async (id) => {
     await deleteShow(id);
-    getMyShows();
+    setRefresh((prev) => !prev);
   };
+
+  useEffect(() => {
+    getMyShows();
+  }, [refresh]);
 
   const renderedShows = myShows.map((show) => {
     const readableDate = new Date(show.performance_date).toLocaleString(

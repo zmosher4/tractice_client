@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { editShow, getShowById } from '../managers/showManager';
-import { getAllArtists } from '../managers/artistManager';
+import { createArtist, getAllArtists } from '../managers/artistManager';
 
 export const EditShow = () => {
   const [show, setShow] = useState({
@@ -11,6 +11,7 @@ export const EditShow = () => {
     artist_id: '',
   });
   const [artists, setArtists] = useState([]);
+  const [newArtistName, setNewArtistName] = useState('');
   const navigate = useNavigate();
   const { showId } = useParams();
 
@@ -45,7 +46,10 @@ export const EditShow = () => {
 
   const getArtists = async () => {
     const data = await getAllArtists();
-    setArtists(data);
+    const filteredArtists = data.filter(
+      (a) => a.user.id === JSON.parse(localStorage.getItem('token')).id
+    );
+    setArtists(filteredArtists);
   };
 
   useEffect(() => {
@@ -59,6 +63,17 @@ export const EditShow = () => {
       ...prevShow,
       [name]: value,
     }));
+  };
+
+  const handleNewArtistChange = (e) => {
+    setNewArtistName(e.target.value);
+  };
+
+  const handleAddArtist = async (e) => {
+    e.preventDefault();
+    await createArtist({ name: newArtistName });
+    getArtists();
+    setNewArtistName('');
   };
 
   const handleSubmit = async (e) => {
@@ -160,6 +175,24 @@ export const EditShow = () => {
                 </option>
               ))}
             </select>
+          </fieldset>
+
+          <fieldset className="flex flex-col mb-4">
+            <label htmlFor="newArtist">Add New Artist</label>
+            <input
+              type="text"
+              id="newArtist"
+              placeholder="New Artist Name"
+              value={newArtistName}
+              onChange={handleNewArtistChange}
+              className="border rounded border-gray-400 p-4"
+            />
+            <button
+              onClick={handleAddArtist}
+              className="mt-2 border rounded border-gray-400 px-4 py-2"
+            >
+              Add Artist
+            </button>
           </fieldset>
         </div>
 
