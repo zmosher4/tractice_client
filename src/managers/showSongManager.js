@@ -9,3 +9,14 @@ export const getAllShowSongs = async () => {
   const showSongs = await res.json();
   return showSongs;
 };
+
+export const createShowSong = async (showSong) => {
+  return await fetch(`${url}/showsongs`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Token ${JSON.parse(localStorage.getItem('token')).token}`,
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify(showSong),
+  });
+};

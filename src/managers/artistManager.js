@@ -7,3 +7,16 @@ export const getAllArtists = async () => {
   });
   return await res.json();
 };
+
+export const createArtist = async (artist) => {
+  const res = await fetch(`${url}/artists`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Token ${JSON.parse(localStorage.getItem('token')).token}`,
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify(artist),
+  });
+  const artistData = await res.json();
+  return artistData;
+};

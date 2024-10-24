@@ -44,6 +44,7 @@ export const Sessions = () => {
     return (
       <div key={s.id}>
         <Link to={`/session/${s.id}`}>
+          <div>Show Info: {s.show?.description}</div>
           <div>Show Date: {readableShowDate}</div>
           <div>Artist: {s.show?.artist?.name}</div>
           <div>Session Date: {readableSessionDate}</div>

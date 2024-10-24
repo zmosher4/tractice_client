@@ -1,19 +1,31 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { deleteShow, getShowById } from '../managers/showManager';
+import { getPracticeSessions } from '../managers/practiceSessionManager';
+import { Sessions } from './Sessions';
 
 export const ShowDetails = () => {
   const [show, setShow] = useState();
   const { showId } = useParams();
   const navigate = useNavigate();
+  const [showSessions, setShowSessions] = useState([]);
 
   const getShow = async () => {
     const data = await getShowById(parseInt(showId));
     setShow(data);
   };
 
+  const getShowSessions = async () => {
+    const allSessions = await getPracticeSessions();
+    const filteredSessions = allSessions.filter(
+      (session) => session.show?.id === parseInt(showId)
+    );
+    setShowSessions(filteredSessions);
+  };
+
   useEffect(() => {
     getShow();
+    getShowSessions();
   }, []);
 
   const handleDelete = async (id) => {
@@ -60,6 +72,15 @@ export const ShowDetails = () => {
           {' '}
           Delete
         </button>
+      </div>
+      <div>
+        <h1>Practice sessions for this show:</h1>
+        <Sessions />
+      </div>
+      <div className="flex justify-center items-center mt-6">
+        <Link to={`/session/${showId}/create`}>
+          Create a Practice session for this show
+        </Link>
       </div>
     </>
   );

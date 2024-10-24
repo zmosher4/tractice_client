@@ -19,3 +19,14 @@ export const getSessionById = async (id) => {
   const practiceSession = await res.json();
   return practiceSession;
 };
+
+export const createSession = async (session) => {
+  return await fetch(`${url}/practicesessions`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Token ${JSON.parse(localStorage.getItem('token')).token}`,
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify(session),
+  });
+};

@@ -9,6 +9,7 @@ import { EditShow } from '../components/EditShow';
 import { ShowDetails } from '../components/ShowDetails';
 import { ShowsProvider } from '../state/ShowsContext';
 import { SessionDetails } from '../components/SessionDetails';
+import { NewSession } from '../components/NewSession';
 
 export const ApplicationViews = () => {
   return (
@@ -21,7 +22,7 @@ export const ApplicationViews = () => {
             <Route path="/" element={<App />} />
             <Route path="/sessions" element={<Sessions />} />
             <Route path="/session/:sessionId" element={<SessionDetails />} />
-
+            <Route path="/session/:showId/create" element={<NewSession />} />
             <Route path="/new-show" element={<NewShow />} />
             <Route path="/edit-show/:showId" element={<EditShow />} />
             <Route path="/show/:showId" element={<ShowDetails />} />
