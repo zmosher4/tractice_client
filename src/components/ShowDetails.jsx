@@ -44,6 +44,28 @@ export const ShowDetails = () => {
       })
     : 'Loading...';
 
+  const renderedSessionList = showSessions.map((s) => {
+    const readableSessionDate = new Date(s.session_date).toLocaleString(
+      'en-US',
+      {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+      }
+    );
+    return (
+      <div key={s.id}>
+        <Link to={`/session/${s.id}`}>
+          <div>Session Date: {readableSessionDate}</div>
+          <div>Session Notes: {s.notes}</div>
+        </Link>
+      </div>
+    );
+  });
+
   return (
     <>
       <h1 className="text-4xl flex justify-center items-center">
@@ -75,7 +97,7 @@ export const ShowDetails = () => {
       </div>
       <div>
         <h1>Practice sessions for this show:</h1>
-        <Sessions />
+        {renderedSessionList}
       </div>
       <div className="flex justify-center items-center mt-6">
         <Link to={`/session/${showId}/create`}>
