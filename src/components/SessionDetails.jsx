@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { getSessionById } from '../managers/practiceSessionManager';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import {
+  deleteSession,
+  getSessionById,
+} from '../managers/practiceSessionManager';
 import { getShowById } from '../managers/showManager';
 import { getAllShowSongs } from '../managers/showSongManager';
 
@@ -9,6 +12,7 @@ export const SessionDetails = () => {
   const [show, setShow] = useState({});
   const [session, setSession] = useState({});
   const { sessionId } = useParams();
+  const navigate = useNavigate();
 
   const getSession = async () => {
     const sessionData = await getSessionById(parseInt(sessionId));
@@ -33,8 +37,21 @@ export const SessionDetails = () => {
     }
   }, [session]);
 
+  const handleDeleteSession = async (sessionId) => {
+    const showId = session.show?.id;
+    await deleteSession(sessionId);
+    navigate(`/show/${showId}`);
+  };
+
   const renderedSetList = setList.map((showSong) => {
-    return <div key={showSong.id}>{showSong.song.title}</div>;
+    return (
+      <li
+        className="list-disc justify-center items-center ml-10"
+        key={showSong.id}
+      >
+        {showSong.song.title}
+      </li>
+    );
   });
   const readableShowDate = new Date(
     session.show?.performance_date
@@ -59,14 +76,39 @@ export const SessionDetails = () => {
   );
 
   return (
-    <div>
-      <div>Show: {session?.show?.description}</div>
-      <div>Show Date: {readableShowDate}</div>
-      <div>Setlist:</div>
-      <div>{renderedSetList}</div>
-      <div>Session Date: {readableSessionDate}</div>
-      <div>Session Notes: {session.notes}</div>
-      <Link to={`/edit-session/${session.id}`}>Edit</Link>
+    <div className="flex flex-col items-center">
+      <div className="text-4xl w-full max-w-xl flex items-center mb-7">
+        Show: {session?.show?.description}
+      </div>
+      <div className="w-full max-w-xl flex items-start text-2xl m-4">
+        Show Date: {readableShowDate}
+      </div>
+      <div className="w-full max-w-xl flex items-start text-2xl m-4">
+        Setlist:
+      </div>
+      <div className="w-full max-w-xl flex items-start text-2xl m-4 flex-col">
+        {renderedSetList}
+      </div>
+      <div className="w-full max-w-xl flex items-start text-2xl">
+        Session Date: {readableSessionDate}
+      </div>
+      <ul className="w-full max-w-xl flex items-start text-2xl">
+        Session Notes: {session.notes}
+      </ul>
+      <div className="flex">
+        <Link
+          className=" border rounded border-gray-500 px-2 inline-block m-4 text-lg"
+          to={`/edit-session/${session.id}`}
+        >
+          Edit
+        </Link>
+        <button
+          className="border rounded border-gray-500 px-2 inline-block m-4 text-lg"
+          onClick={() => handleDeleteSession(session.id)}
+        >
+          Delete
+        </button>
+      </div>
     </div>
   );
 };

@@ -33,28 +33,30 @@ export const Shows = () => {
 
     return (
       <div
-        className="m-4 border border-gray-700 shadow-md rounded w-[20rem] p-4 hover:translate-y-0.5 transition-transform"
+        className="m-4 border border-gray-700 shadow-lg rounded-lg w-[20rem] p-4 hover:shadow-xl transition-shadow"
         key={show.id}
       >
-        <Link to={`/show/${show.id}`}>
-          <div>{show.description}</div>
-          <div>{readableDate}</div>
-          <div>{show.artist.name}</div>
+        <Link
+          to={`/show/${show.id}`}
+          className="block text-lg font-semibold mb-2 text-blue-600 hover:underline"
+        >
+          {show.description}
         </Link>
+        <div className="text-gray-600">{readableDate}</div>
+        <div className="text-gray-600">{show.artist.name}</div>
 
-        <div className="flex justify-end space-x-5">
+        <div className="flex justify-end space-x-3 mt-4">
           <Link
-            className="border rounded border-gray-500 px-2"
+            className="border rounded border-gray-500 px-3 py-1 hover:bg-blue-500 hover:text-white transition"
             to={`edit-show/${show.id}`}
           >
-            {' '}
-            edit{' '}
+            Edit
           </Link>
           <button
-            className="border rounded border-gray-500 px-2"
+            className="border rounded border-red-500 px-3 py-1 text-red-500 hover:bg-red-500 hover:text-white transition"
             onClick={() => handleDelete(show.id)}
           >
-            delete
+            Delete
           </button>
         </div>
       </div>
@@ -62,22 +64,31 @@ export const Shows = () => {
   });
 
   return (
-    <>
-      <h1 className="flex items-center justify-center ml-5 mb-5 text-6xl font-bold">
-        Upcoming Shows
-      </h1>
-      <button
-        className="border rounded border-gray-500 px-2 m-4 active:translate-y-0.5 hover:bg-black hover:text-white transition-all"
-        onClick={() => navigate('/new-show')}
-      >
-        New Show
-      </button>
-      <div className="flex justify-between">
-        <div className="flex flex-col">{renderedShows}</div>
-        <div>
-          <Artists shows={myShows} />
-        </div>
-      </div>
-    </>
+    <div className="flex flex-col items-center">
+      {myShows.length > 0 ? (
+        <>
+          <h1 className="text-6xl font-bold mb-5">Upcoming Shows</h1>
+          <button
+            className="border rounded border-gray-500 px-4 py-2 mb-4 bg-blue-800 text-white hover:bg-blue-700 transition"
+            onClick={() => navigate('/new-show')}
+          >
+            New Show
+          </button>
+          <div className="flex justify-between w-full max-w-4xl">
+            <div className="flex flex-col">{renderedShows}</div>
+            <div className="border rounded border-gray-500 w-fit p-2 h-fit ">
+              <Artists shows={myShows} />
+            </div>
+          </div>
+        </>
+      ) : (
+        <h1 className="text-6xl font-bold">
+          No shows yet! Add one{' '}
+          <Link className="text-blue-500 underline" to="/new-show">
+            here
+          </Link>
+        </h1>
+      )}
+    </div>
   );
 };

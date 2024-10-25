@@ -18,15 +18,23 @@ export const EditShow = () => {
   const getShow = async () => {
     const data = await getShowById(parseInt(showId));
 
-    // Convert UTC date to local date for form
+    // Create date object directly from the UTC string
     const performanceDate = new Date(data.performance_date);
-    const localDate = new Date(performanceDate.getTime());
 
-    // Format date as YYYY-MM-DD for date input
-    const formattedDate = localDate.toISOString().split('T')[0];
+    // Extract date components for local time
+    const localYear = performanceDate.getFullYear();
+    const localMonth = performanceDate.getMonth() + 1; // Months are zero-based
+    const localDate = performanceDate.getDate();
 
-    // Format time as HH:mm in 24-hour format
-    const time = localDate.toLocaleTimeString('en-US', {
+    // Format date for local input
+    const formattedDate = [
+      localYear,
+      String(localMonth).padStart(2, '0'),
+      String(localDate).padStart(2, '0'),
+    ].join('-');
+
+    // Get time in local timezone
+    const time = performanceDate.toLocaleTimeString('en-US', {
       hour12: false,
       hour: '2-digit',
       minute: '2-digit',

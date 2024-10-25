@@ -41,3 +41,12 @@ export const editSession = async (session) => {
     body: JSON.stringify(session),
   });
 };
+
+export const deleteSession = async (sessionId) => {
+  await fetch(`${url}/practicesessions/${sessionId}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Token ${JSON.parse(localStorage.getItem('token')).token}`,
+    },
+  });
+};
