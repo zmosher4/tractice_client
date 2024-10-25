@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { getSessionById } from '../managers/practiceSessionManager';
 import { getShowById } from '../managers/showManager';
 import { getAllShowSongs } from '../managers/showSongManager';
@@ -66,6 +66,7 @@ export const SessionDetails = () => {
       <div>{renderedSetList}</div>
       <div>Session Date: {readableSessionDate}</div>
       <div>Session Notes: {session.notes}</div>
+      <Link to={`/edit-session/${session.id}`}>Edit</Link>
     </div>
   );
 };

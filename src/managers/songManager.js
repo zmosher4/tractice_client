@@ -12,3 +12,12 @@ export const createSong = async (song) => {
   const songData = await res.json();
   return songData;
 };
+
+export const deleteSong = async (songId) => {
+  await fetch(`${url}/songs/${songId}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Token ${JSON.parse(localStorage.getItem('token')).token}`,
+    },
+  });
+};
