@@ -30,3 +30,14 @@ export const createSession = async (session) => {
     body: JSON.stringify(session),
   });
 };
+
+export const editSession = async (session) => {
+  return await fetch(`${url}/practicesessions/${session.id}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Token ${JSON.parse(localStorage.getItem('token')).token}`,
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify(session),
+  });
+};

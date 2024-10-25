@@ -22,12 +22,8 @@ export const EditShow = () => {
     const performanceDate = new Date(data.performance_date);
     const localDate = new Date(performanceDate.getTime());
 
-    // Format date as MM/DD/YYYY
-    const date = localDate.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    });
+    // Format date as YYYY-MM-DD for date input
+    const formattedDate = localDate.toISOString().split('T')[0];
 
     // Format time as HH:mm in 24-hour format
     const time = localDate.toLocaleTimeString('en-US', {
@@ -38,7 +34,7 @@ export const EditShow = () => {
 
     setShow({
       description: data.description,
-      date: date,
+      date: formattedDate,
       time: time,
       artist_id: data.artist.id,
     });
@@ -81,13 +77,13 @@ export const EditShow = () => {
 
     try {
       // Parse the date and time inputs
-      const [month, day, year] = show.date.split('/');
+      const [year, month, day] = show.date.split('-');
       const [hours, minutes] = show.time.split(':');
 
       // Create date object in local time
       const localDateTime = new Date(
         parseInt(year),
-        parseInt(month) - 1, // Month is 0-based
+        parseInt(month) - 1,
         parseInt(day),
         parseInt(hours),
         parseInt(minutes)
@@ -106,7 +102,7 @@ export const EditShow = () => {
       await editShow(editedShow);
       navigate(`/show/${showId}`);
     } catch (error) {
-      alert('Please enter valid date (MM/DD/YYYY) and time values.');
+      alert('Please enter valid date and time values.');
     }
   };
 
@@ -134,14 +130,13 @@ export const EditShow = () => {
           <fieldset className="flex flex-col mb-4">
             <label htmlFor="date">Performance Date</label>
             <input
-              type="text"
+              type="date"
               id="date"
               name="date"
-              placeholder="MM/DD/YYYY"
               value={show.date}
               onChange={handleInputChange}
-              required
               className="border rounded border-gray-400 p-4"
+              required
             />
           </fieldset>
 

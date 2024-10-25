@@ -1,15 +1,91 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { createSession } from '../managers/practiceSessionManager';
-import { createSong } from '../managers/songManager';
-import { createShowSong } from '../managers/showSongManager';
+import {
+  editSession,
+  getSessionById,
+} from '../managers/practiceSessionManager';
+import { createShowSong, getAllShowSongs } from '../managers/showSongManager';
+import { createSong, deleteSong } from '../managers/songManager';
 
-export const NewSession = () => {
-  const { showId } = useParams();
+export const EditSession = () => {
+  const { sessionId } = useParams();
   const [session, setSession] = useState({});
   const navigate = useNavigate();
   const [songs, setSongs] = useState([]);
+  const [newSongs, setNewSongs] = useState([]);
   const [song, setSong] = useState({ title: '', description: '' });
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const getSession = async () => {
+    const sessionData = await getSessionById(parseInt(sessionId));
+    const sessionDate = new Date(sessionData.session_date);
+    const localDate = new Date(sessionDate.getTime());
+
+    const formattedDate = localDate.toISOString().split('T')[0];
+    const time = localDate.toLocaleTimeString('en-US', {
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+    setSession({
+      id: sessionData.id,
+      notes: sessionData.notes,
+      date: formattedDate,
+      time: time,
+      show_id: sessionData.show.id,
+    });
+  };
+
+  const getSetList = async () => {
+    try {
+      // Only fetch if we're not in the middle of a delete operation
+      if (!isDeleting) {
+        const showSongData = await getAllShowSongs();
+        const filteredShowSongs = showSongData.filter(
+          (showSong) => showSong.show.id === session.show_id
+        );
+        const mappedSongs = filteredShowSongs.map((showSong) => showSong.song);
+        setSongs(mappedSongs);
+      }
+    } catch (error) {
+      console.error('Error fetching set list:', error);
+    }
+  };
+
+  const handleSongTitleChange = (e) => {
+    const copy = { ...song, title: e.target.value };
+    setSong(copy);
+  };
+
+  const handleSongNotesChange = (e) => {
+    const copy = { ...song, description: e.target.value };
+    setSong(copy);
+  };
+
+  const handleAddSong = async () => {
+    if (song.title) {
+      const tempSong = { ...song, id: `temp-${Date.now()}` };
+      setNewSongs((prev) => [...prev, tempSong]);
+      setSong({ title: '', description: '' });
+    }
+  };
+
+  const handleDeleteSong = async (songId) => {
+    try {
+      setIsDeleting(true);
+      if (songId.toString().startsWith('temp-')) {
+        setNewSongs((prev) => prev.filter((s) => s.id !== songId));
+      } else {
+        await deleteSong(songId);
+        setSongs((prev) => prev.filter((s) => s.id !== songId));
+      }
+    } catch (error) {
+      console.error('Error deleting song:', error);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -19,36 +95,27 @@ export const NewSession = () => {
     }));
   };
 
-  const handleSongTitleChange = (e) => {
-    const copy = { ...song, title: e.target.value };
-    setSong(copy);
-  };
+  // Initial load of session data
+  useEffect(() => {
+    getSession();
+  }, [sessionId]);
 
-  const handleAddSong = () => {
-    if (song.title.trim()) {
-      // Only add if title is not empty
-      const newSong = {
-        ...song,
-        id: `temp-${Date.now()}`, // Add temporary ID for deletion tracking
-      };
-      setSongs((prev) => [...prev, newSong]);
-      setSong({ title: '', description: '' });
+  // Load set list when show_id is available and not deleting
+  useEffect(() => {
+    if (session.show_id && !isDeleting) {
+      getSetList();
     }
-  };
-
-  const handleDeleteSong = (songId) => {
-    setSongs((prev) => prev.filter((s) => s.id !== songId));
-  };
+  }, [session.show_id]);
 
   const postSongs = async () => {
-    const songPromises = songs.map(async (song) => {
+    const songPromises = newSongs.map(async (song) => {
       const songRes = await createSong({
         title: song.title,
         description: song.description,
       });
       await createShowSong({
         song_id: songRes.id,
-        show_id: parseInt(showId),
+        show_id: parseInt(session.show_id),
       });
     });
     await Promise.all(songPromises);
@@ -68,28 +135,24 @@ export const NewSession = () => {
         parseInt(hours),
         parseInt(minutes)
       );
+
       const utcDateTime = localDateTime.toISOString();
 
-      const createdSession = {
-        ...session,
-        show_id: parseInt(showId),
-        session_date: utcDateTime,
-      };
+      const editedSession = { ...session, session_date: utcDateTime };
 
       await postSongs();
-
-      const sessionRes = await createSession(createdSession);
-      const created = await sessionRes.json();
-      navigate(`/session/${created?.id}`);
+      await editSession(editedSession);
+      navigate(`/session/${sessionId}`);
     } catch (error) {
-      alert('Please enter valid date (MM/DD/YYYY) and time values.');
+      console.error(error);
+      alert('Please enter valid date and time values.');
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <h1 className="text-4xl font-bold flex items-center justify-center">
-        Add a session
+        Edit a session
       </h1>
       <div className="flex items-center justify-center flex-col m-8">
         <div className="flex flex-col flex-wrap justify-center space-x-4">
@@ -131,8 +194,8 @@ export const NewSession = () => {
           <div>
             <h4>Song List:</h4>
             <ul>
-              {songs.map((song) => (
-                <div key={song.id} className="flex items-center gap-2">
+              {[...songs, ...newSongs].map((song) => (
+                <div key={song.id}>
                   <li>{song.title}</li>
                   <button
                     type="button"
@@ -151,7 +214,6 @@ export const NewSession = () => {
               type="date"
               id="date"
               name="date"
-              placeholder="MM/DD/YYYY"
               value={session.date || ''}
               onChange={handleInputChange}
               className="border rounded border-gray-400 p-4"

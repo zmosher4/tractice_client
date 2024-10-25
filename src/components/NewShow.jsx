@@ -44,13 +44,13 @@ export const NewShow = () => {
 
     try {
       // Parse the date and time inputs
-      const [month, day, year] = show.date.split('/');
+      const [year, month, day] = show.date.split('-');
       const [hours, minutes] = show.time.split(':');
 
       // Create date object in local time
       const localDateTime = new Date(
         parseInt(year),
-        parseInt(month) - 1, // Month is 0-based
+        parseInt(month) - 1,
         parseInt(day),
         parseInt(hours),
         parseInt(minutes)
@@ -69,7 +69,7 @@ export const NewShow = () => {
       const created = await res.json();
       navigate(`/show/${created?.id}`);
     } catch (error) {
-      alert('Please enter valid date (MM/DD/YYYY) and time values.');
+      alert('Please enter valid date and time values.');
     }
   };
 
@@ -97,10 +97,9 @@ export const NewShow = () => {
           <fieldset className="flex flex-col mb-4">
             <label htmlFor="date">Performance Date</label>
             <input
-              type="text"
+              type="date"
               id="date"
               name="date"
-              placeholder="MM/DD/YYYY"
               value={show.date || ''}
               onChange={handleInputChange}
               className="border rounded border-gray-400 p-4"

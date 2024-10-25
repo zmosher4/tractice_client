@@ -57,11 +57,12 @@ export const ShowDetails = () => {
       }
     );
     return (
-      <div key={s.id}>
+      <div className="m-4" key={s.id}>
         <Link to={`/session/${s.id}`}>
           <div>Session Date: {readableSessionDate}</div>
           <div>Session Notes: {s.notes}</div>
         </Link>
+        <Link to={`/edit-session/${s.id}`}>Edit</Link>
       </div>
     );
   });
