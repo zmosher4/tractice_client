@@ -10,8 +10,14 @@ export const Artists = ({ shows }) => {
 
   return (
     <div>
-      <div>Artists I Play For:</div>
-      <ul>{renderedArtists}</ul>
+      {renderedArtists.length > 0 ? (
+        <>
+          <div>Artists I Play For:</div>
+          <ul>{renderedArtists}</ul>
+        </>
+      ) : (
+        ''
+      )}
     </div>
   );
 };

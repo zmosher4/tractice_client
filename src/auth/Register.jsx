@@ -36,91 +36,106 @@ export const Register = () => {
   };
 
   return (
-    <main className="container--login">
+    <main className="flex items-center justify-center min-h-screen bg-gray-100">
       <dialog className="dialog dialog--auth" ref={existDialog}>
-        <div>User does not exist</div>
+        <div className="p-4 text-center">User does not exist</div>
         <button
-          className="button--close"
+          className="mt-2 p-2 bg-blue-500 text-white rounded-md"
           onClick={(e) => existDialog.current.close()}
         >
           Close
         </button>
       </dialog>
 
-      <section>
-        <form className="form--login" onSubmit={handleRegister}>
-          <h1 className="text-4xl mt-7 mb-3">Rock of Ages</h1>
-          <h2 className="text-xl mb-10">Register new account</h2>
+      <section className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <form className="flex flex-col" onSubmit={handleRegister}>
+          <h1 className="text-3xl font-bold text-center mb-4">Tractice</h1>
+          <h2 className="text-xl text-center mb-6">Register new account</h2>
           <fieldset className="mb-4">
-            <label htmlFor="firstName"> First name </label>
+            <label
+              className="block text-sm font-medium mb-1"
+              htmlFor="firstName"
+            >
+              First name
+            </label>
             <input
               type="text"
               id="firstName"
               value={firstName}
               onChange={(evt) => setFirstName(evt.target.value)}
-              className="form-control"
-              placeholder=""
+              className="block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
               required
               autoFocus
             />
           </fieldset>
           <fieldset className="mb-4">
-            <label htmlFor="lastName"> Last name </label>
+            <label
+              className="block text-sm font-medium mb-1"
+              htmlFor="lastName"
+            >
+              Last name
+            </label>
             <input
               type="text"
               id="lastName"
               value={lastName}
               onChange={(evt) => setLastName(evt.target.value)}
-              className="form-control"
-              placeholder=""
+              className="block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
               required
-              autoFocus
             />
           </fieldset>
           <fieldset className="mb-4">
-            <label htmlFor="inputEmail"> Email address </label>
+            <label
+              className="block text-sm font-medium mb-1"
+              htmlFor="inputEmail"
+            >
+              Email address
+            </label>
             <input
               type="email"
               id="inputEmail"
               value={email}
               onChange={(evt) => setEmail(evt.target.value)}
-              className="form-control"
+              className="block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
               placeholder="Email address"
               required
-              autoFocus
             />
           </fieldset>
           <fieldset className="mb-4">
-            <label htmlFor="inputPassword"> Password </label>
+            <label
+              className="block text-sm font-medium mb-1"
+              htmlFor="inputPassword"
+            >
+              Password
+            </label>
             <input
               type="password"
               id="inputPassword"
               value={password}
               onChange={(evt) => setPassword(evt.target.value)}
-              className="form-control"
+              className="block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
               placeholder="Password"
+              required
             />
           </fieldset>
           <fieldset>
             <button
               type="submit"
-              className="button p-3 rounded-md bg-blue-800 text-blue-100"
+              className="mt-4 p-3 rounded-md bg-blue-800 text-white hover:bg-blue-700 transition"
             >
               Register
             </button>
           </fieldset>
         </form>
-      </section>
-      <div className="loginLinks">
-        <section className="link--register">
+        <div className="mt-6 text-center">
           <Link
             className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
             to="/login"
           >
             Already have an account?
           </Link>
-        </section>
-      </div>
+        </div>
+      </section>
     </main>
   );
 };
