@@ -5,33 +5,16 @@ import {
 } from '../managers/practiceSessionManager';
 import { Link } from 'react-router-dom';
 import { useShows } from '../state/ShowsContext';
+import { useSessions } from '../state/SessionsContext';
+import { Calendar } from './Calendar';
 
 export const Sessions = () => {
-  const [mySessions, setMySessions] = useState([]);
+  const { mySessions, loading, handleDeleteSession } = useSessions();
   const { myShows, getMyShows } = useShows();
-  const [loading, setLoading] = useState(true);
-
-  const getSessions = async () => {
-    const sessionData = await getPracticeSessions();
-    const filteredSessions = sessionData.filter(
-      (s) => s.show?.user?.id === JSON.parse(localStorage.getItem('token')).id
-    );
-    setMySessions(filteredSessions);
-    setLoading(false);
-  };
 
   useEffect(() => {
     getMyShows();
   }, []);
-
-  useEffect(() => {
-    getSessions();
-  }, []);
-
-  const handleDeleteSession = async (sessionId) => {
-    await deleteSession(sessionId);
-    getSessions();
-  };
 
   // Moved `renderedShows` outside of `renderedSessions` to make it accessible in the return block
   const renderedShows = myShows.map((show) => {
@@ -178,6 +161,9 @@ export const Sessions = () => {
           )}
         </>
       )}
+      <div className="m-10">
+        <Calendar />
+      </div>
     </div>
   );
 };

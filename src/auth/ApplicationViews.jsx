@@ -11,26 +11,32 @@ import { ShowsProvider } from '../state/ShowsContext';
 import { SessionDetails } from '../components/SessionDetails';
 import { NewSession } from '../components/NewSession';
 import { EditSession } from '../components/EditSession';
+import { SessionsProvider } from '../state/SessionsContext';
 
 export const ApplicationViews = () => {
   return (
     <ShowsProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route element={<Authorized />}>
-            <Route path="/" element={<App />} />
-            <Route path="/sessions" element={<Sessions />} />
-            <Route path="/session/:sessionId" element={<SessionDetails />} />
-            <Route path="/session/:showId/create" element={<NewSession />} />
-            <Route path="/edit-session/:sessionId" element={<EditSession />} />
-            <Route path="/new-show" element={<NewShow />} />
-            <Route path="/edit-show/:showId" element={<EditShow />} />
-            <Route path="/show/:showId" element={<ShowDetails />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <SessionsProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route element={<Authorized />}>
+              <Route path="/" element={<App />} />
+              <Route path="/sessions" element={<Sessions />} />
+              <Route path="/session/:sessionId" element={<SessionDetails />} />
+              <Route path="/session/:showId/create" element={<NewSession />} />
+              <Route
+                path="/edit-session/:sessionId"
+                element={<EditSession />}
+              />
+              <Route path="/new-show" element={<NewShow />} />
+              <Route path="/edit-show/:showId" element={<EditShow />} />
+              <Route path="/show/:showId" element={<ShowDetails />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </SessionsProvider>
     </ShowsProvider>
   );
 };
