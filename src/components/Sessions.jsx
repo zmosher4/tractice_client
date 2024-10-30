@@ -90,69 +90,88 @@ export const Sessions = () => {
         hour12: true,
       }
     );
-
     return (
-      <div>
+      <div
+        key={s.id}
+        className="m-4 p-4 w-full max-w-md border border-gray-300 bg-white shadow-lg rounded-lg transition-transform hover:shadow-xl hover:-translate-y-1"
+      >
         {loading ? (
-          <div>Loading...</div>
+          <div className="text-center text-gray-500">Loading...</div>
         ) : (
-          <div className="m-4 border border-gray-700 shadow-md rounded w-[20rem] p-4 hover:translate-y-0.5 transition-transform key={s.id}">
-            <Link to={`/session/${s.id}`}>
-              <div className="text-lg p-2">
-                Show Info: {s.show?.description}
+          <>
+            <Link to={`/session/${s.id}`} className="block mb-4">
+              <div className="text-lg font-semibold text-gray-700 mb-1">
+                {s.show?.description}
               </div>
-              <div className="text-lg p-2">Show Date: {readableShowDate}</div>
-              <div className="text-lg p-2">Artist: {s.show?.artist?.name}</div>
-              <div className="text-lg p-2">
-                Session Date: {readableSessionDate}
+              <div className="text-sm text-gray-500">
+                <span className="font-medium">Show Date:</span>{' '}
+                {readableShowDate}
               </div>
-              <div className="text-lg p-2">Notes: {s.notes}</div>
+              <div className="text-sm text-gray-500">
+                <span className="font-medium">Artist:</span>{' '}
+                {s.show?.artist?.name}
+              </div>
+              <div className="text-sm text-gray-500">
+                <span className="font-medium">Session Date:</span>{' '}
+                {readableSessionDate}
+              </div>
+              <div className="text-sm text-gray-600 mt-2">
+                <span className="font-medium">Notes:</span> {s.notes}
+              </div>
             </Link>
-            <Link
-              className=" border rounded border-gray-500 px-2 inline-block m-4 text-lg"
-              to={`/edit-session/${s.id}`}
-            >
-              Edit{' '}
-            </Link>
-            <button
-              className=" border rounded border-gray-500 px-2 inline-block m-4 text-lg"
-              onClick={() => handleDeleteSession(s.id)}
-            >
-              {' '}
-              Delete
-            </button>
-          </div>
+            <div className="flex justify-end space-x-4">
+              <Link
+                to={`/edit-session/${s.id}`}
+                className="px-3 py-1 border border-blue-500 text-blue-500 rounded hover:bg-blue-100 transition"
+              >
+                Edit
+              </Link>
+              <button
+                className="px-3 py-1 border border-red-500 text-red-500 rounded hover:bg-red-100 transition"
+                onClick={() => handleDeleteSession(s.id)}
+              >
+                Delete
+              </button>
+            </div>
+          </>
         )}
       </div>
     );
   });
 
   return (
-    <div className="space-y-24">
-      <h1 className="flex justify-center items-center text-4xl font-bold">
+    <div className="space-y-12 p-8">
+      <h1 className="text-center text-4xl font-bold text-gray-800">
         My Sessions
       </h1>
 
       {loading ? (
-        <div className="flex justify-center items-center text-2xl">
+        <div className="flex justify-center items-center text-2xl text-gray-600">
           Loading sessions...
         </div>
       ) : (
         <>
           {renderedSessions.length > 0 ? (
-            renderedSessions
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {renderedSessions}
+            </div>
           ) : (
-            <div className="flex flex-col justify-center items-center text-2xl">
+            <div className="flex flex-col items-center text-2xl text-gray-600">
               <p>
                 No sessions yet. Create a show to make sessions
-                <Link className="ml-1.5 text-blue-400" to="/new-show">
+                <Link
+                  className="ml-1.5 text-blue-500 underline hover:text-blue-600"
+                  to="/new-show"
+                >
                   here
                 </Link>
               </p>
               {myShows.length > 0 && (
-                <div className="flex flex-col items-center text-xl mt-4">
+                <div className="text-center text-xl mt-6">
                   <p>Or choose from your shows below to create a session</p>
-                  <div className="flex items-center">{renderedShows}</div>
+                  <div className="flex flex-wrap justify-center mt-4 space-x-4">
+                    {renderedShows}
+                  </div>
                 </div>
               )}
             </div>
