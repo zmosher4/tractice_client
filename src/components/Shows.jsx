@@ -3,6 +3,7 @@ import { deleteShow, getShows } from '../managers/showManager';
 import { Link, useNavigate } from 'react-router-dom';
 import { Artists } from './Artists';
 import { useShows } from '../state/ShowsContext';
+import { Calendar } from './Calendar';
 
 export const Shows = () => {
   const { myShows, getMyShows } = useShows();
@@ -118,6 +119,9 @@ export const Shows = () => {
           </h1>
         </div>
       )}
+      <div className="m-10">
+        <Calendar />
+      </div>
     </div>
   );
 };
