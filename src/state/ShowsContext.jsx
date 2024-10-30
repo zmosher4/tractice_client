@@ -9,10 +9,14 @@ export const ShowsProvider = ({ children }) => {
   const [myShows, setMyShows] = useState([]);
 
   const getMyShows = async () => {
+    const tokenData = localStorage.getItem('token');
+    if (!tokenData) {
+      return;
+    }
+
     const data = await getShows();
-    const filteredShows = data.filter(
-      (show) => show.user.id === JSON.parse(localStorage.getItem('token')).id
-    );
+    const userId = JSON.parse(tokenData).id;
+    const filteredShows = data.filter((show) => show.user.id === userId);
     setMyShows(filteredShows);
   };
 

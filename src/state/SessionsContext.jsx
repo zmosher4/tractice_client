@@ -11,8 +11,14 @@ export const SessionsProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const getSessions = async () => {
+    const tokenData = localStorage.getItem('token');
+    if (!tokenData) {
+      setLoading(false);
+      return;
+    }
+
     const sessionData = await getPracticeSessions();
-    const userId = JSON.parse(localStorage.getItem('token')).id;
+    const userId = JSON.parse(tokenData).id;
     const filteredSessions = sessionData.filter(
       (s) => s.show?.user?.id === userId
     );
