@@ -150,92 +150,101 @@ export const EditSession = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1 className="text-4xl font-bold flex items-center justify-center">
-        Edit a session
-      </h1>
-      <div className="flex items-center justify-center flex-col m-8">
-        <div className="flex flex-col flex-wrap justify-center space-x-4">
-          <fieldset className="flex flex-col ml-4 mb-4">
-            <label htmlFor="notes">Notes</label>
-            <input
-              type="text"
-              id="notes"
-              name="notes"
-              placeholder="Session Notes"
-              required
-              className="border rounded border-gray-400 p-4 w-[40rem]"
-              value={session.notes || ''}
-              onChange={handleInputChange}
-            />
-          </fieldset>
-          <h3>Add Songs</h3>
-          <fieldset className="flex flex-col ml-4 mb-4">
-            <label htmlFor="song">Song Title</label>
-            <input
-              type="text"
-              id="song"
-              name="song"
-              placeholder="Song Title"
-              className="border rounded border-gray-400 p-4 w-[40rem]"
-              value={song.title}
-              onChange={handleSongTitleChange}
-            />
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white shadow-md rounded-lg p-8 m-4 max-w-lg mx-auto"
+    >
+      <h1 className="text-4xl font-bold text-center mb-6">Edit a Session</h1>
+      <div className="flex flex-col space-y-6">
+        <fieldset className="flex flex-col">
+          <label htmlFor="notes" className="font-medium mb-2">
+            Notes
+          </label>
+          <input
+            type="text"
+            id="notes"
+            name="notes"
+            placeholder="Session Notes"
+            required
+            className="border rounded border-gray-300 p-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={session.notes || ''}
+            onChange={handleInputChange}
+          />
+        </fieldset>
 
-            <button
-              type="button"
-              className="m-2 p-2 border rounded"
-              onClick={handleAddSong}
-            >
-              Add Song
-            </button>
-          </fieldset>
+        <fieldset className="flex flex-col">
+          <h3 className="font-semibold mb-2">Add Songs</h3>
+          <label htmlFor="song" className="font-medium mb-2">
+            Song Title
+          </label>
+          <input
+            type="text"
+            id="song"
+            name="song"
+            placeholder="Song Title"
+            className="border rounded border-gray-300 p-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={song.title}
+            onChange={handleSongTitleChange}
+          />
+          <button
+            type="button"
+            className="mt-2 bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-500 transition"
+            onClick={handleAddSong}
+          >
+            Add Song
+          </button>
+        </fieldset>
 
-          <div>
-            <h4>Song List:</h4>
-            <ul>
-              {[...songs, ...newSongs].map((song) => (
-                <div key={song.id}>
-                  <li>{song.title}</li>
-                  <button
-                    type="button"
-                    onClick={() => handleDeleteSong(song.id)}
-                    className="text-red-500"
-                  >
-                    delete
-                  </button>
-                </div>
-              ))}
-            </ul>
-          </div>
-          <fieldset className="flex flex-col mb-4">
-            <label htmlFor="date">Session Date</label>
-            <input
-              type="date"
-              id="date"
-              name="date"
-              value={session.date || ''}
-              onChange={handleInputChange}
-              className="border rounded border-gray-400 p-4"
-              required
-            />
-          </fieldset>
-
-          <fieldset className="flex flex-col mb-4">
-            <label htmlFor="time">Session Time</label>
-            <input
-              type="time"
-              id="time"
-              name="time"
-              value={session.time || ''}
-              onChange={handleInputChange}
-              className="border rounded border-gray-400 p-4"
-              required
-            />
-          </fieldset>
+        <div>
+          <h4 className="font-semibold mb-2">Song List:</h4>
+          <ul className="list-disc pl-5">
+            {[...songs, ...newSongs].map((song) => (
+              <li key={song.id} className="flex justify-between items-center">
+                {song.title}
+                <button
+                  type="button"
+                  onClick={() => handleDeleteSong(song.id)}
+                  className="text-red-600 hover:text-red-500"
+                >
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
+
+        <fieldset className="flex flex-col">
+          <label htmlFor="date" className="font-medium mb-2">
+            Session Date
+          </label>
+          <input
+            type="date"
+            id="date"
+            name="date"
+            value={session.date || ''}
+            onChange={handleInputChange}
+            className="border rounded border-gray-300 p-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </fieldset>
+
+        <fieldset className="flex flex-col">
+          <label htmlFor="time" className="font-medium mb-2">
+            Session Time
+          </label>
+          <input
+            type="time"
+            id="time"
+            name="time"
+            value={session.time || ''}
+            onChange={handleInputChange}
+            className="border rounded border-gray-300 p-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </fieldset>
+
         <button
-          className="m-4 border rounded border-gray-400 px-9 py-2"
+          className="w-full bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-500 transition"
           type="submit"
         >
           Submit

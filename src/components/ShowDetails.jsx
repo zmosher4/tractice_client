@@ -95,52 +95,61 @@ export const ShowDetails = () => {
   });
 
   return (
-    <>
-      <h1 className="text-4xl flex justify-center items-center">
+    <div className="flex flex-col items-center p-8 bg-gray-50 min-h-screen">
+      <h1 className="text-4xl font-bold text-center mb-8 text-gray-800">
         Show Details
       </h1>
-      <div className="flex justify-center items-center text-2xl m-4">
-        Show Date: {readableDate}
+
+      <div className="bg-white shadow-md rounded-lg p-6 mb-8 w-full max-w-2xl">
+        <div className="flex justify-between text-2xl text-gray-700 mb-4">
+          <span>Show Date:</span>
+          <span className="font-semibold">{readableDate}</span>
+        </div>
+        <div className="flex justify-between text-2xl text-gray-700 mb-4">
+          <span>Artist:</span>
+          <span className="font-semibold">{show?.artist.name}</span>
+        </div>
+        <div className="flex justify-between text-2xl text-gray-700 mb-4">
+          <span>Description:</span>
+          <span className="font-semibold">{show?.description}</span>
+        </div>
       </div>
-      <div className="flex justify-center items-center text-2xl m-4">
-        Artist: {show?.artist.name}
-      </div>
-      <div className="flex justify-center items-center text-2xl m-4">
-        Description: {show?.description}
-      </div>
-      <div className="flex justify-center items-center space-x-3 text-lg">
+
+      <div className="flex justify-center items-center space-x-4 mb-8">
         <Link
-          className="border rounded border-gray-500 px-2"
+          className="bg-blue-600 text-white rounded-lg px-6 py-2 hover:bg-blue-500 transition duration-300"
           to={`/edit-show/${show?.id}`}
         >
-          Edit{' '}
+          Edit
         </Link>
         <button
-          className="border rounded border-gray-500 px-2"
+          className="bg-red-600 text-white rounded-lg px-6 py-2 hover:bg-red-500 transition duration-300"
           onClick={() => handleDelete(show.id)}
         >
-          {' '}
           Delete
         </button>
       </div>
-      <div>
-        {renderedSessionList.length > 0 && (
-          <div className="flex justify-center items-center flex-col">
-            <p className="text-2xl m-4 mt-32">
-              Practice sessions for this show:
-            </p>
+
+      {renderedSessionList.length > 0 && (
+        <div className="flex flex-col items-center mb-8">
+          <p className="text-2xl text-gray-800 mb-4">
+            Practice sessions for this show:
+          </p>
+          <div className="bg-white shadow-md rounded-lg p-4 w-full max-w-2xl">
             {renderedSessionList}
           </div>
-        )}
-      </div>
-      <div className="flex justify-center items-center mt-6">
-        <div className="text-lg border rounded border-gray-500 px-2 inline-block">
-          Create a New Practice session for this show{' '}
-          <Link className="text-blue-500" to={`/session/${showId}/create`}>
-            here
-          </Link>
         </div>
+      )}
+
+      <div className="text-lg border rounded border-gray-500 px-4 py-3 bg-gray-100 w-full max-w-2xl text-center">
+        Create a New Practice session for this show{' '}
+        <Link
+          className="text-blue-600 hover:text-blue-500"
+          to={`/session/${showId}/create`}
+        >
+          here
+        </Link>
       </div>
-    </>
+    </div>
   );
 };

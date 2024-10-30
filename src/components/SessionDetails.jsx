@@ -46,13 +46,14 @@ export const SessionDetails = () => {
   const renderedSetList = setList.map((showSong) => {
     return (
       <li
-        className="list-disc justify-center items-center ml-10"
+        className="list-disc ml-6 mb-2 text-lg text-gray-700"
         key={showSong.id}
       >
         {showSong.song.title}
       </li>
     );
   });
+
   const readableShowDate = new Date(
     session.show?.performance_date
   ).toLocaleString('en-US', {
@@ -63,6 +64,7 @@ export const SessionDetails = () => {
     minute: '2-digit',
     hour12: true,
   });
+
   const readableSessionDate = new Date(session.session_date).toLocaleString(
     'en-US',
     {
@@ -76,34 +78,38 @@ export const SessionDetails = () => {
   );
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="text-4xl w-full max-w-xl flex items-center mb-7">
-        Show: {session?.show?.description}
+    <div className="flex flex-col items-center p-6 bg-gray-100 min-h-screen">
+      <div className="w-full max-w-2xl bg-white rounded-lg shadow-lg p-6 mb-6 text-center">
+        <h1 className="text-4xl font-semibold text-gray-800 mb-4">
+          Show: {session?.show?.description}
+        </h1>
+        <p className="text-lg text-gray-600">
+          Show Date: <span className="font-medium">{readableShowDate}</span>
+        </p>
       </div>
-      <div className="w-full max-w-xl flex items-start text-2xl m-4">
-        Show Date: {readableShowDate}
+
+      <div className="w-full max-w-2xl bg-white rounded-lg shadow-lg p-6 mb-6">
+        <h2 className="text-3xl font-semibold text-gray-800 mb-4">Setlist</h2>
+        <ul className="list-inside space-y-2">{renderedSetList}</ul>
       </div>
-      <div className="w-full max-w-xl flex items-start text-2xl m-4">
-        Setlist:
+
+      <div className="w-full max-w-2xl bg-white rounded-lg shadow-lg p-6 mb-6">
+        <p className="text-lg text-gray-600 mb-2">
+          Session Date:{' '}
+          <span className="font-medium">{readableSessionDate}</span>
+        </p>
+        <p className="text-lg text-gray-600">Session Notes: {session.notes}</p>
       </div>
-      <div className="w-full max-w-xl flex items-start text-2xl m-4 flex-col">
-        {renderedSetList}
-      </div>
-      <div className="w-full max-w-xl flex items-start text-2xl">
-        Session Date: {readableSessionDate}
-      </div>
-      <ul className="w-full max-w-xl flex items-start text-2xl">
-        Session Notes: {session.notes}
-      </ul>
-      <div className="flex">
+
+      <div className="flex space-x-4 mt-4">
         <Link
-          className=" border rounded border-gray-500 px-2 inline-block m-4 text-lg"
+          className="bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition"
           to={`/edit-session/${session.id}`}
         >
           Edit
         </Link>
         <button
-          className="border rounded border-gray-500 px-2 inline-block m-4 text-lg"
+          className="bg-red-500 text-white rounded-lg px-4 py-2 hover:bg-red-600 transition"
           onClick={() => handleDeleteSession(session.id)}
         >
           Delete

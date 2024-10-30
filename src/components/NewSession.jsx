@@ -87,93 +87,102 @@ export const NewSession = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1 className="text-4xl font-bold flex items-center justify-center">
-        Add a session
-      </h1>
-      <div className="flex items-center justify-center flex-col m-8">
-        <div className="flex flex-col flex-wrap justify-center space-x-4">
-          <fieldset className="flex flex-col ml-4 mb-4">
-            <label htmlFor="notes">Notes</label>
-            <input
-              type="text"
-              id="notes"
-              name="notes"
-              placeholder="Session Notes"
-              required
-              className="border rounded border-gray-400 p-4 w-[40rem]"
-              value={session.notes || ''}
-              onChange={handleInputChange}
-            />
-          </fieldset>
-          <h3>Add Songs</h3>
-          <fieldset className="flex flex-col ml-4 mb-4">
-            <label htmlFor="song">Song Title</label>
-            <input
-              type="text"
-              id="song"
-              name="song"
-              placeholder="Song Title"
-              className="border rounded border-gray-400 p-4 w-[40rem]"
-              value={song.title}
-              onChange={handleSongTitleChange}
-            />
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-md mx-auto"
+    >
+      <h1 className="text-4xl font-bold mb-6 text-center">Add a Session</h1>
 
-            <button
-              type="button"
-              className="m-2 p-2 border rounded"
-              onClick={handleAddSong}
-            >
-              Add Song
-            </button>
-          </fieldset>
+      <div className="mb-4">
+        <label className="block text-gray-700 font-bold mb-2" htmlFor="notes">
+          Notes
+        </label>
+        <input
+          type="text"
+          id="notes"
+          name="notes"
+          placeholder="Session Notes"
+          required
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          value={session.notes || ''}
+          onChange={handleInputChange}
+        />
+      </div>
 
-          <div>
-            <h4>Song List:</h4>
-            <ul>
-              {songs.map((song) => (
-                <div key={song.id} className="flex items-center gap-2">
-                  <li>{song.title}</li>
-                  <button
-                    type="button"
-                    onClick={() => handleDeleteSong(song.id)}
-                    className="text-red-500"
-                  >
-                    delete
-                  </button>
-                </div>
-              ))}
-            </ul>
-          </div>
-          <fieldset className="flex flex-col mb-4">
-            <label htmlFor="date">Session Date</label>
-            <input
-              type="date"
-              id="date"
-              name="date"
-              placeholder="MM/DD/YYYY"
-              value={session.date || ''}
-              onChange={handleInputChange}
-              className="border rounded border-gray-400 p-4"
-              required
-            />
-          </fieldset>
-
-          <fieldset className="flex flex-col mb-4">
-            <label htmlFor="time">Session Time</label>
-            <input
-              type="time"
-              id="time"
-              name="time"
-              value={session.time || ''}
-              onChange={handleInputChange}
-              className="border rounded border-gray-400 p-4"
-              required
-            />
-          </fieldset>
-        </div>
+      <h3 className="text-xl font-semibold mb-2">Add Songs</h3>
+      <div className="mb-4">
+        <label className="block text-gray-700 font-bold mb-2" htmlFor="song">
+          Song Title
+        </label>
+        <input
+          type="text"
+          id="song"
+          name="song"
+          placeholder="Song Title"
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          value={song.title}
+          onChange={handleSongTitleChange}
+        />
         <button
-          className="m-4 border rounded border-gray-400 px-9 py-2"
+          type="button"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-2"
+          onClick={handleAddSong}
+        >
+          Add Song
+        </button>
+      </div>
+
+      <div className="mb-4">
+        <h4 className="font-semibold">Song List:</h4>
+        <ul className="list-disc list-inside">
+          {songs.map((song) => (
+            <li key={song.id} className="flex items-center justify-between">
+              <span>{song.title}</span>
+              <button
+                type="button"
+                onClick={() => handleDeleteSong(song.id)}
+                className="text-red-500 hover:underline"
+              >
+                Delete
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-gray-700 font-bold mb-2" htmlFor="date">
+          Session Date
+        </label>
+        <input
+          type="date"
+          id="date"
+          name="date"
+          value={session.date || ''}
+          onChange={handleInputChange}
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          required
+        />
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-gray-700 font-bold mb-2" htmlFor="time">
+          Session Time
+        </label>
+        <input
+          type="time"
+          id="time"
+          name="time"
+          value={session.time || ''}
+          onChange={handleInputChange}
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          required
+        />
+      </div>
+
+      <div className="flex items-center justify-center">
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="submit"
         >
           Submit
