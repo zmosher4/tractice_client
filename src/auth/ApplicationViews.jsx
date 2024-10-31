@@ -17,7 +17,7 @@ export const ApplicationViews = () => {
   return (
     <ShowsProvider>
       <SessionsProvider>
-        <BrowserRouter>
+        <BrowserRouter basename="/">
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />

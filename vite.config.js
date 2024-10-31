@@ -5,14 +5,10 @@ export default defineConfig({
   plugins: [react()],
   build: {
     outDir: 'dist',
-    rollupOptions: {
-      input: {
-        main: './index.html',
-      },
-    },
   },
   base: '/',
-  server: {
-    historyApiFallback: true,
-  },
+  // Add this section
+  assetsInclude: ['**/*.html'],
+  // Copy _redirects and _headers to dist
+  publicDir: 'public',
 });
