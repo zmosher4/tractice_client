@@ -1,0 +1,15 @@
+static_sites:
+  - name: tractice-client
+    environment_slug: node-js
+    github:
+      repo: your-repo-name
+      branch: main
+      deploy_on_push: true
+    build_command: npm run build
+    output_dir: dist
+    error_document: index.html
+    routes:
+      - source: /
+        destination: /index.html
+      - source: /*
+        destination: /index.html
