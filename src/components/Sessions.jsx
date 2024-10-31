@@ -9,11 +9,13 @@ import { useSessions } from '../state/SessionsContext';
 import { Calendar } from './Calendar';
 
 export const Sessions = () => {
-  const { mySessions, loading, handleDeleteSession } = useSessions();
+  const { mySessions, loading, handleDeleteSession, refreshSessions } =
+    useSessions();
   const { myShows, getMyShows } = useShows();
 
   useEffect(() => {
     getMyShows();
+    refreshSessions();
   }, []);
 
   // Moved `renderedShows` outside of `renderedSessions` to make it accessible in the return block
@@ -111,7 +113,10 @@ export const Sessions = () => {
               </Link>
               <button
                 className="px-3 py-1 border border-red-500 text-red-500 rounded hover:bg-red-100 transition"
-                onClick={() => handleDeleteSession(s.id)}
+                onClick={async () => {
+                  handleDeleteSession(s.id);
+                  await refreshSessions();
+                }}
               >
                 Delete
               </button>
