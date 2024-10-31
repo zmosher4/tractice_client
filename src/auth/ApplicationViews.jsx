@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Authorized } from './Authorized';
 import { Register } from './Register';
 import { Login } from './Login';
@@ -12,15 +12,18 @@ import { SessionDetails } from '../components/SessionDetails';
 import { NewSession } from '../components/NewSession';
 import { EditSession } from '../components/EditSession';
 import { SessionsProvider } from '../state/SessionsContext';
-
 export const ApplicationViews = () => {
   return (
     <ShowsProvider>
       <SessionsProvider>
-        <BrowserRouter basename="/">
+        {/* Remove basename if it's there */}
+        <BrowserRouter>
           <Routes>
+            {/* Move these outside of Authorized */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+
+            {/* Auth routes */}
             <Route element={<Authorized />}>
               <Route path="/" element={<App />} />
               <Route path="/sessions" element={<Sessions />} />
@@ -33,8 +36,11 @@ export const ApplicationViews = () => {
               <Route path="/new-show" element={<NewShow />} />
               <Route path="/edit-show/:showId" element={<EditShow />} />
               <Route path="/show/:showId" element={<ShowDetails />} />
-              <Route path="*" element={<App />} />
+              {/* Add catch-all inside Authorized */}
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
+            {/* Add catch-all outside Authorized for non-auth routes */}
+            <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </BrowserRouter>
       </SessionsProvider>

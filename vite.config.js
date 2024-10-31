@@ -7,8 +7,6 @@ export default defineConfig({
     outDir: 'dist',
   },
   base: '/',
-  // Add this section
-  assetsInclude: ['**/*.html'],
-  // Copy _redirects and _headers to dist
+  // This ensures the _redirects file is copied to dist
   publicDir: 'public',
 });
