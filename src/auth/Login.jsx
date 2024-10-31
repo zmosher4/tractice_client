@@ -9,7 +9,7 @@ export const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    fetch(`https://tractice-app-fjll5.ondigitalocean.app/login`, {
+    fetch(`https://tractice-api-9kq3u.ondigitalocean.app/login`, {
       method: 'POST',
       body: JSON.stringify({ username: email, email, password }),
       headers: {

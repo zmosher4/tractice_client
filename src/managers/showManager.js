@@ -1,4 +1,4 @@
-const url = 'https://tractice-app-fjll5.ondigitalocean.app';
+const url = 'https://tractice-api-9kq3u.ondigitalocean.app';
 
 export const getShows = async () => {
   const res = await fetch(`${url}/shows`, {
