@@ -33,6 +33,7 @@ export const ApplicationViews = () => {
               <Route path="/new-show" element={<NewShow />} />
               <Route path="/edit-show/:showId" element={<EditShow />} />
               <Route path="/show/:showId" element={<ShowDetails />} />
+              <Route path="*" element={<App />} />
             </Route>
           </Routes>
         </BrowserRouter>
