@@ -6,6 +6,7 @@ import {
 } from '../managers/practiceSessionManager';
 import { createShowSong, getAllShowSongs } from '../managers/showSongManager';
 import { createSong, deleteSong } from '../managers/songManager';
+import { useSessions } from '../state/SessionsContext';
 
 export const EditSession = () => {
   const { sessionId } = useParams();
@@ -15,6 +16,7 @@ export const EditSession = () => {
   const [newSongs, setNewSongs] = useState([]);
   const [song, setSong] = useState({ title: '', description: '' });
   const [isDeleting, setIsDeleting] = useState(false);
+  const { refreshSessions } = useSessions();
 
   const getSession = async () => {
     const sessionData = await getSessionById(parseInt(sessionId));
@@ -142,6 +144,7 @@ export const EditSession = () => {
 
       await postSongs();
       await editSession(editedSession);
+      await refreshSessions();
       navigate(`/session/${sessionId}`);
     } catch (error) {
       console.error(error);

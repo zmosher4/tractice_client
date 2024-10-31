@@ -81,7 +81,14 @@ export const SessionDetails = () => {
     <div className="flex flex-col items-center p-6 bg-gray-100 min-h-screen">
       <div className="w-full max-w-2xl bg-white rounded-lg shadow-lg p-6 mb-6 text-center">
         <h1 className="text-4xl font-semibold text-gray-800 mb-4">
-          Show: {session?.show?.description}
+          Show:{' '}
+          <Link
+            className="hover:text-blue-600 transition-colors duration-200"
+            to={`/show/${session?.show?.id}`}
+          >
+            {' '}
+            {session?.show?.description}
+          </Link>
         </h1>
         <p className="text-lg text-gray-600">
           Show Date: <span className="font-medium">{readableShowDate}</span>

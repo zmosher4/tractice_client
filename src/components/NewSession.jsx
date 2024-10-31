@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { createSession } from '../managers/practiceSessionManager';
 import { createSong } from '../managers/songManager';
 import { createShowSong } from '../managers/showSongManager';
+import { useSessions } from '../state/SessionsContext';
 
 export const NewSession = () => {
   const { showId } = useParams();
@@ -10,6 +11,7 @@ export const NewSession = () => {
   const navigate = useNavigate();
   const [songs, setSongs] = useState([]);
   const [song, setSong] = useState({ title: '', description: '' });
+  const { refreshSessions } = useSessions();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -80,6 +82,7 @@ export const NewSession = () => {
 
       const sessionRes = await createSession(createdSession);
       const created = await sessionRes.json();
+      await refreshSessions();
       navigate(`/session/${created?.id}`);
     } catch (error) {
       alert('Please enter valid date (MM/DD/YYYY) and time values.');
