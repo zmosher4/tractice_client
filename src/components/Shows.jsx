@@ -6,7 +6,7 @@ import { useShows } from '../state/ShowsContext';
 import { Calendar } from './Calendar';
 
 export const Shows = () => {
-  const { myShows, getMyShows } = useShows();
+  const { myShows, getMyShows, loading } = useShows();
   const navigate = useNavigate();
   const [refresh, setRefresh] = useState(false);
 
@@ -75,7 +75,11 @@ export const Shows = () => {
 
   return (
     <div className="min-h-screen bg-gray-50/50 py-12 px-4 sm:px-6 lg:px-8">
-      {myShows.length > 0 ? (
+      {loading ? (
+        <div className="flex justify-center items-center text-2xl text-gray-600">
+          Loading...
+        </div>
+      ) : myShows.length > 0 ? (
         <div className="max-w-7xl mx-auto space-y-8">
           <div className="text-center">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900">

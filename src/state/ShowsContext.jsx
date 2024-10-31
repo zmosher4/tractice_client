@@ -7,10 +7,12 @@ export const useShows = () => useContext(ShowsContext);
 
 export const ShowsProvider = ({ children }) => {
   const [myShows, setMyShows] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const getMyShows = async () => {
     const tokenData = localStorage.getItem('token');
     if (!tokenData) {
+      setLoading(false);
       return;
     }
 
@@ -18,6 +20,7 @@ export const ShowsProvider = ({ children }) => {
     const userId = JSON.parse(tokenData).id;
     const filteredShows = data.filter((show) => show.user.id === userId);
     setMyShows(filteredShows);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -25,7 +28,7 @@ export const ShowsProvider = ({ children }) => {
   }, []);
 
   return (
-    <ShowsContext.Provider value={{ myShows, setMyShows, getMyShows }}>
+    <ShowsContext.Provider value={{ myShows, setMyShows, getMyShows, loading }}>
       {children}
     </ShowsContext.Provider>
   );

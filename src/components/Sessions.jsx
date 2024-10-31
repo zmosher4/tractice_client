@@ -18,7 +18,6 @@ export const Sessions = () => {
     refreshSessions();
   }, []);
 
-  // Moved `renderedShows` outside of `renderedSessions` to make it accessible in the return block
   const renderedShows = myShows.map((show) => {
     const readableDate = new Date(show.performance_date).toLocaleString(
       'en-US',
