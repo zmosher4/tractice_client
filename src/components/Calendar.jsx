@@ -8,11 +8,12 @@ import { useSessions } from '../state/SessionsContext';
 
 export const Calendar = () => {
   const { myShows, getMyShows } = useShows();
-  const { mySessions } = useSessions();
+  const { mySessions, refreshSessions } = useSessions();
   const navigate = useNavigate();
 
   useEffect(() => {
     getMyShows();
+    refreshSessions();
   }, []);
 
   const showCalendarData = myShows.map((show) => ({
