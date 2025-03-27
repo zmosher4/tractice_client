@@ -13,43 +13,44 @@ export const Sessions = () => {
     useSessions();
   const { myShows, getMyShows } = useShows();
 
+  //fetch shows and sessions on initial render
   useEffect(() => {
     getMyShows();
     refreshSessions();
   }, []);
 
-  const renderedShows = myShows.map((show) => {
-    const readableDate = new Date(show.performance_date).toLocaleString(
-      'en-US',
-      {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true,
-      }
-    );
+  // const renderedShows = myShows.map((show) => {
+  //   const readableDate = new Date(show.performance_date).toLocaleString(
+  //     'en-US',
+  //     {
+  //       year: 'numeric',
+  //       month: 'long',
+  //       day: 'numeric',
+  //       hour: '2-digit',
+  //       minute: '2-digit',
+  //       hour12: true,
+  //     }
+  //   );
 
-    return (
-      <div
-        className="m-4 border border-gray-700 shadow-md rounded w-[20rem] p-4"
-        key={show.id}
-      >
-        <div>
-          <div>{show.description}</div>
-          <div>{readableDate}</div>
-          <div>Artist: {show.artist.name}</div>
-        </div>
-        <Link
-          className="border rounded border-gray-500 px-2"
-          to={`/session/${show.id}/create`}
-        >
-          New Session
-        </Link>
-      </div>
-    );
-  });
+  //   return (
+  //     <div
+  //       className="m-4 border border-gray-700 shadow-md rounded w-[20rem] p-4"
+  //       key={show.id}
+  //     >
+  //       <div>
+  //         <div>{show.description}</div>
+  //         <div>{readableDate}</div>
+  //         <div>Artist: {show.artist.name}</div>
+  //       </div>
+  //       <Link
+  //         className="border rounded border-gray-500 px-2"
+  //         to={`/session/${show.id}/create`}
+  //       >
+  //         New Session
+  //       </Link>
+  //     </div>
+  //   );
+  // });
 
   const renderedSessions = mySessions.map((s) => {
     const readableShowDate = new Date(s.show?.performance_date).toLocaleString(

@@ -1,3 +1,18 @@
 .fc-event {
   @apply cursor-pointer;
 }
+.fc .fc-daygrid-day-top {
+  flex-direction: row;
+}
+
+.fc .fc-daygrid-day-number {
+  /* Add any additional styling you want for the day numbers */
+}
+.fc-daygrid-event-dot {
+  border-color: #your-color !important; /* Change the dot color */
+  margin: 0 4px !important; /* Adjust spacing */
+}
+
+.fc-event {
+  cursor: pointer; /* Show pointer cursor on hover */
+}

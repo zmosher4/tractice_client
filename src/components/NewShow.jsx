@@ -9,6 +9,7 @@ export const NewShow = () => {
   const [artists, setArtists] = useState([]);
   const [newArtistName, setNewArtistName] = useState('');
 
+  //changing local show state when an input is updated in the component
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setShow((prevShow) => ({
@@ -17,6 +18,7 @@ export const NewShow = () => {
     }));
   };
 
+  //fetch all artists from the database, then set artists state to artists that are assigned to the logged in user
   const getArtists = async () => {
     const data = await getAllArtists();
     const filteredArtists = data.filter(
@@ -24,14 +26,18 @@ export const NewShow = () => {
     );
     setArtists(filteredArtists);
   };
+
+  //get artists state on initial render
   useEffect(() => {
     getArtists();
   }, []);
 
+  //set the artist input field to local state
   const handleNewArtistChange = (e) => {
     setNewArtistName(e.target.value);
   };
 
+  //add the artist name from local state to the artist database on submit
   const handleAddArtist = async (e) => {
     e.preventDefault();
     await createArtist({ name: newArtistName });

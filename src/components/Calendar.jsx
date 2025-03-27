@@ -46,6 +46,7 @@ export const Calendar = () => {
       initialView="dayGridMonth"
       events={[...showCalendarData, ...sessionCalendarData]}
       eventClick={handleEventClick}
+      dayMaxEvents={true}
     />
   );
 };

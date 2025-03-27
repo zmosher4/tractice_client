@@ -5,42 +5,48 @@ import {
   deleteSession,
   getPracticeSessions,
 } from '../managers/practiceSessionManager';
-import { Sessions } from './Sessions';
+import { useSessions } from '../state/SessionsContext';
 
 export const ShowDetails = () => {
   const [show, setShow] = useState();
   const { showId } = useParams();
   const navigate = useNavigate();
   const [showSessions, setShowSessions] = useState([]);
+  const { mySessions } = useSessions();
 
+  //fetch a specific show based on the url the user is on
   const getShow = async () => {
     const data = await getShowById(parseInt(showId));
     setShow(data);
   };
 
-  const getShowSessions = async () => {
-    const allSessions = await getPracticeSessions();
-    const filteredSessions = allSessions.filter(
+  //since sessions have a show id foreign key, get all the sessions that have the current shows id
+  const getShowSessions = () => {
+    const filteredSessions = mySessions.filter(
       (session) => session.show?.id === parseInt(showId)
     );
     setShowSessions(filteredSessions);
   };
 
+  //fetch and set current show and session state on initial render
   useEffect(() => {
     getShow();
     getShowSessions();
   }, []);
 
+  //deleting the show the user is currently viewing
   const handleDelete = async (id) => {
     await deleteShow(id);
     navigate('/');
   };
 
+  //deleting a session listed under show details
   const handleDeleteSession = async (sessionId) => {
     await deleteSession(sessionId);
     getShowSessions();
   };
 
+  //taking the performance date from database and turning it into a readable string for the user
   const readableDate = show?.performance_date
     ? new Date(show.performance_date).toLocaleString('en-US', {
         year: 'numeric',
@@ -52,7 +58,9 @@ export const ShowDetails = () => {
       })
     : 'Loading...';
 
+  //rendering out the sessions assinged the the show the user is viewing
   const renderedSessionList = showSessions.map((s) => {
+    //making the session date readable
     const readableSessionDate = new Date(s.session_date).toLocaleString(
       'en-US',
       {
