@@ -11,7 +11,7 @@ export const Register = () => {
 
   const handleRegister = (e) => {
     e.preventDefault();
-    fetch(`https://tractice-api-9kq3u.ondigitalocean.app/register`, {
+    fetch(`http://localhost:8000/register`, {
       method: 'POST',
       body: JSON.stringify({
         email,

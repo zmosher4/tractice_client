@@ -8,32 +8,29 @@ export const EditShow = () => {
     description: '',
     date: '',
     time: '',
-    artist_id: '',
+    artist_id: 0,
   });
   const [artists, setArtists] = useState([]);
   const [newArtistName, setNewArtistName] = useState('');
   const navigate = useNavigate();
   const { showId } = useParams();
 
+  //get show data and set local show state based on the id in the url
   const getShow = async () => {
     const data = await getShowById(parseInt(showId));
 
-    // Create date object directly from the UTC string
     const performanceDate = new Date(data.performance_date);
 
-    // Extract date components for local time
     const localYear = performanceDate.getFullYear();
-    const localMonth = performanceDate.getMonth() + 1; // Months are zero-based
+    const localMonth = performanceDate.getMonth() + 1;
     const localDate = performanceDate.getDate();
 
-    // Format date for local input
     const formattedDate = [
       localYear,
       String(localMonth).padStart(2, '0'),
       String(localDate).padStart(2, '0'),
     ].join('-');
 
-    // Get time in local timezone
     const time = performanceDate.toLocaleTimeString('en-US', {
       hour12: false,
       hour: '2-digit',
@@ -48,6 +45,7 @@ export const EditShow = () => {
     });
   };
 
+  //get artists assigned to the logged in user and set the local state to those artists
   const getArtists = async () => {
     const data = await getAllArtists();
     const filteredArtists = data.filter(
@@ -56,11 +54,13 @@ export const EditShow = () => {
     setArtists(filteredArtists);
   };
 
+  //fetch and set artists and shows on initial render
   useEffect(() => {
     getShow();
     getArtists();
   }, []);
 
+  //handling show input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setShow((prevShow) => ({
@@ -69,10 +69,12 @@ export const EditShow = () => {
     }));
   };
 
+  //setting new added artist name to local state
   const handleNewArtistChange = (e) => {
     setNewArtistName(e.target.value);
   };
 
+  //posting the added artist to artist database and clearing the input
   const handleAddArtist = async (e) => {
     e.preventDefault();
     await createArtist({ name: newArtistName });

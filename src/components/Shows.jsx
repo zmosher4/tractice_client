@@ -12,14 +12,18 @@ export const Shows = () => {
 
   const handleDelete = async (id) => {
     await deleteShow(id);
+    //when a show is deleted, use this refresh state to trigger a rerender
     setRefresh((prev) => !prev);
   };
 
+  //fetch shows when a refresh happens (when a show is deleted)
   useEffect(() => {
     getMyShows();
   }, [refresh]);
 
   const renderedShows = myShows.map((show) => {
+    //take the date string when show is fetch and format it better
+
     const readableDate = new Date(show.performance_date).toLocaleString(
       'en-US',
       {
@@ -37,6 +41,7 @@ export const Shows = () => {
         className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-6 border border-gray-200/80 mx-auto max-w-md"
         key={show.id}
       >
+        {/* user can click show description to take them to the individual show page */}
         <Link
           to={`/show/${show.id}`}
           className="inline-block text-xl font-semibold text-gray-900 hover:text-blue-600 transition-colors duration-200 mb-4"
@@ -80,6 +85,7 @@ export const Shows = () => {
           Loading...
         </div>
       ) : myShows.length > 0 ? (
+        //only display shows if there are any in the myShows data
         <div className="max-w-7xl mx-auto space-y-8">
           <div className="text-center">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900">
@@ -111,6 +117,7 @@ export const Shows = () => {
           </div>
         </div>
       ) : (
+        //if no shows assigned to the logged in user, they are prompted to add one
         <div className="text-center max-w-3xl mx-auto">
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
             No shows yet! Add one{' '}
@@ -123,7 +130,7 @@ export const Shows = () => {
           </h1>
         </div>
       )}
-      <div className="m-10">
+      <div data-calendar="cypress-calendar" className="m-10">
         <Calendar />
       </div>
     </div>

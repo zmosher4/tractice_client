@@ -16,14 +16,11 @@ export const ApplicationViews = () => {
   return (
     <ShowsProvider>
       <SessionsProvider>
-        {/* Remove basename if it's there */}
         <BrowserRouter>
           <Routes>
-            {/* Move these outside of Authorized */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
-            {/* Auth routes */}
             <Route element={<Authorized />}>
               <Route path="/" element={<App />} />
               <Route path="/sessions" element={<Sessions />} />
@@ -36,10 +33,8 @@ export const ApplicationViews = () => {
               <Route path="/new-show" element={<NewShow />} />
               <Route path="/edit-show/:showId" element={<EditShow />} />
               <Route path="/show/:showId" element={<ShowDetails />} />
-              {/* Add catch-all inside Authorized */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
-            {/* Add catch-all outside Authorized for non-auth routes */}
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </BrowserRouter>

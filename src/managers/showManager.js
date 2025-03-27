@@ -1,4 +1,4 @@
-const url = 'https://tractice-api-9kq3u.ondigitalocean.app';
+const url = 'http://localhost:8000';
 
 export const getShows = async () => {
   const res = await fetch(`${url}/shows`, {
